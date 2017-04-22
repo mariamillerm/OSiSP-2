@@ -15,9 +15,9 @@
 char *prog_name = NULL;
 int find = 0;
 
-void print_error(const char *s_name, const char *message, const char *f_name)
+void print_error(const char *s_name, const char *msg, const char *f_name)
 {
-    fprintf(stderr, "%s: %s %s\n", s_name, message, (f_name)? f_name : "");
+    fprintf(stderr, "%s: %s %s\n", s_name, msg, (f_name)? f_name : "");
 }
 
 int process(char *dir_name, char *file_name, int files) {
@@ -55,13 +55,13 @@ int process(char *dir_name, char *file_name, int files) {
 	    ino_t ino = st.st_ino;
 
 	    if (ilist_next == ilist_len) {
-			ilist_len *= 2;
-			ilist = (ino_t*)realloc(ilist, ilist_len*sizeof(ino_t) );
-		}
+                ilist_len *= 2;
+                ilist = (ino_t*)realloc(ilist, ilist_len*sizeof(ino_t) );
+            }
 
-		int i = 0;
-		while ( (i < ilist_next) && (ino != ilist[i]) )
-			++i;
+            int i = 0;
+            while ( (i < ilist_next) && (ino != ilist[i]) )
+                ++i;
 
 	    if (i == ilist_next)
             {
@@ -107,6 +107,7 @@ int process(char *dir_name, char *file_name, int files) {
         print_error(prog_name, strerror(errno), curr_name);
     }
 	
+    //успешно ли закрылась директория или с ошибкой
     if (closedir(cd) == -1) {
         print_error(prog_name, strerror(errno), dir_name);
     }
@@ -120,6 +121,7 @@ int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "");
     prog_name = basename(argv[0]);
 
+    //соответствие количества аргументов к.строки заданному
     if (argc != 3) {
         print_error(prog_name, "Wrong count of arguments.", 0);
         return 1;
